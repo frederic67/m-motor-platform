@@ -1,0 +1,11 @@
+# Uploads directory
+uploads/
+*.pdf
+*.jpg
+*.jpeg
+*.png
+
+# Logs directory
+logs/
+*.log
+
