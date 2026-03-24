@@ -17,7 +17,7 @@ from app.core.config import settings
 config = context.config
 
 # Override sqlalchemy.url with settings from pydantic config
-config.set_main_option("sqlalchemy.url", settings.DB_URL)
+config.set_main_option("sqlalchemy.url", settings.database_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

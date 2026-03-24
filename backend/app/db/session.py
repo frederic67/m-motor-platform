@@ -7,12 +7,11 @@ from typing import Generator
 if settings.is_sqlite:
     # SQLite configuration for local development
     engine = create_engine(
-        settings.DB_URL,
+        settings.database_url,
         connect_args={"check_same_thread": False},
         echo=settings.DEBUG
     )
-    
-    # Enable foreign key constraints for SQLite
+
     @event.listens_for(engine, "connect")
     def set_sqlite_pragma(dbapi_conn, connection_record):
         cursor = dbapi_conn.cursor()
@@ -21,7 +20,7 @@ if settings.is_sqlite:
 else:
     # PostgreSQL configuration for production
     engine = create_engine(
-        settings.DB_URL,
+        settings.database_url,
         pool_pre_ping=True,
         pool_size=5,
         max_overflow=10,
