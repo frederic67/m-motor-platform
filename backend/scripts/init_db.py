@@ -140,7 +140,7 @@ def init_db():
             print("\n2. Creating demo vehicles (development environment)...")
             create_demo_vehicles(db)
         else:
-            print(f"\n2. Skipping demo vehicles (environment: {settings.ENV})")
+            print(f"\n2. Skipping demo vehicles (environment: {settings.APP_ENV})")
         
         print("\n" + "="*60)
         print("✓ Database initialization complete")

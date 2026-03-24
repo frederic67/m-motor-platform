@@ -96,7 +96,7 @@ async def startup_event():
         f"Starting {settings.APP_NAME} v{settings.APP_VERSION}",
         extra={
             "extra_data": {
-                "environment": settings.ENV,
+                "environment": settings.APP_ENV,
                 "debug": settings.DEBUG,
                 "version": settings.APP_VERSION,
                 "database_type": db_type,
@@ -164,7 +164,7 @@ async def root():
     return {
         "message": settings.APP_NAME,
         "version": settings.APP_VERSION,
-        "environment": settings.ENV,
+        "environment": settings.APP_ENV,
         "database": "SQLite" if settings.is_sqlite else "PostgreSQL"
     }
 
@@ -176,7 +176,7 @@ async def health_check():
     
     health_status = {
         "status": "healthy",
-        "environment": settings.ENV,
+        "environment": settings.APP_ENV,
         "version": settings.APP_VERSION,
         "service": settings.APP_NAME,
         "database_type": "SQLite" if settings.is_sqlite else "PostgreSQL",

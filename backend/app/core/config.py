@@ -11,7 +11,7 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    ENV: Literal["development", "production", "test"] = "development"
+    APP_ENV: Literal["development", "production", "test"] = "development"
 
     # Railway injects DATABASE_URL automatically; DB_URL is the legacy/local name.
     # database_url property resolves the effective URL with SQLite as last fallback.
@@ -55,15 +55,15 @@ class Settings(BaseSettings):
 
     @property
     def is_production(self) -> bool:
-        return self.ENV == "production"
+        return self.APP_ENV == "production"
 
     @property
     def is_development(self) -> bool:
-        return self.ENV == "development"
+        return self.APP_ENV == "development"
 
     @property
     def is_test(self) -> bool:
-        return self.ENV == "test"
+        return self.APP_ENV == "test"
 
     @property
     def is_sqlite(self) -> bool:

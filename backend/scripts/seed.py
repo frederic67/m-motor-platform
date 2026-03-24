@@ -105,7 +105,7 @@ def seed_vehicles(db):
 
 def seed_all(db, force_env=None):
     """Seed all data."""
-    env = force_env or settings.ENV
+    env = force_env or settings.APP_ENV
     
     print(f"\nSeeding database (environment: {env})...")
     print("-" * 60)
