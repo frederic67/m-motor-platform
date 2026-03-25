@@ -43,11 +43,28 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins_list(self) -> list[str]:
-        """Parse CORS_ORIGINS string as JSON list."""
+        """Parse CORS_ORIGINS into a list.
+
+        Accepts three formats:
+          1. JSON array  : '["https://app.vercel.app","http://localhost:5173"]'
+          2. Comma-separated: 'https://app.vercel.app,http://localhost:5173'
+          3. Single URL  : 'https://app.vercel.app'
+        """
+        raw = (self.CORS_ORIGINS or "").strip()
+
+        # Format 1: JSON array
         try:
-            return json.loads(self.CORS_ORIGINS)
-        except (json.JSONDecodeError, TypeError):
-            return ["*"]
+            parsed = json.loads(raw)
+            if isinstance(parsed, list):
+                return [str(o).strip() for o in parsed if str(o).strip()]
+            if isinstance(parsed, str) and parsed.strip():
+                return [parsed.strip()]
+        except (json.JSONDecodeError, TypeError, ValueError):
+            pass
+
+        # Formats 2 & 3: comma-separated or single URL
+        origins = [o.strip() for o in raw.split(",") if o.strip()]
+        return origins if origins else []
 
     @property
     def max_upload_bytes(self) -> int:
