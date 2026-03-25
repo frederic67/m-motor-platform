@@ -118,41 +118,38 @@ async def startup_event():
         logger.error(f"FATAL: Failed to initialize database: {e}", exc_info=True)
         raise
     
-    # Step 2: Auto-seed admin user in development mode
-    if settings.is_development:
+    # Step 2: Idempotent admin seed — runs in every environment
+    try:
+        from app.db.session import SessionLocal
+        from app.models.user import User, UserRole
+        from app.core.security import hash_password
+
+        admin_email = "admin@mmotors.com"
+        logger.info(f"Checking for admin user ({admin_email})...")
+
+        db = SessionLocal()
         try:
-            from app.db.session import SessionLocal
-            from app.models.user import User, UserRole
-            from app.core.security import hash_password
-            
-            logger.info("Auto-seeding admin user in development mode...")
-            
-            db = SessionLocal()
-            try:
-                # Check and create admin user
-                admin_email = "admin@mmotors.com"
-                admin = db.query(User).filter(User.email == admin_email).first()
-                
-                if not admin:
-                    admin = User(
-                        full_name="Admin M-Motors",
-                        email=admin_email,
-                        hashed_password=hash_password("Admin123!"),
-                        role=UserRole.ADMIN
-                    )
-                    db.add(admin)
-                    db.commit()
-                    db.refresh(admin)
-                    logger.info(f"✓ Admin user created: {admin_email} / Admin123!")
-                else:
-                    logger.info(f"✓ Admin user already exists: {admin_email}")
-            except Exception as e:
-                logger.error(f"Error during admin user seeding: {e}", exc_info=True)
-                db.rollback()
-            finally:
-                db.close()
+            admin = db.query(User).filter(User.email == admin_email).first()
+            if not admin:
+                admin = User(
+                    full_name="Admin M-Motors",
+                    email=admin_email,
+                    hashed_password=hash_password("Admin123!"),
+                    role=UserRole.ADMIN,
+                )
+                db.add(admin)
+                db.commit()
+                db.refresh(admin)
+                logger.info(f"✓ Admin user created: {admin_email}")
+            else:
+                logger.info(f"✓ Admin user already exists: {admin_email}")
         except Exception as e:
-            logger.error(f"Error during auto-seeding setup: {e}", exc_info=True)
+            logger.error(f"Error during admin user seeding: {e}", exc_info=True)
+            db.rollback()
+        finally:
+            db.close()
+    except Exception as e:
+        logger.error(f"Error during admin seeding setup: {e}", exc_info=True)
     
     logger.info(f"✓ {settings.APP_NAME} started successfully on {db_type}")
 
