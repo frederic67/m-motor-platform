@@ -40,7 +40,7 @@ const VehicleTable = ({ vehicles, onEdit, onDelete, onToggleSale, onToggleRent }
               borderBottom: '2px solid rgba(193, 18, 31, 0.3)',
             }}
           >
-            {['Photo', 'Brand', 'Model', 'Year', 'Price', 'Mileage', 'Sale', 'Rent', 'Actions'].map((header) => (
+            {['Photo', 'Marque', 'Modèle', 'Année', 'Prix', 'Kilométrage', 'Vente', 'Location', 'Actions'].map((header) => (
               <TableCell
                 key={header}
                 sx={{
@@ -137,7 +137,7 @@ const VehicleTable = ({ vehicles, onEdit, onDelete, onToggleSale, onToggleRent }
               </TableCell>
               <TableCell>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Tooltip title="Edit">
+                  <Tooltip title="Modifier">
                     <IconButton
                       size="small"
                       onClick={() => onEdit(vehicle)}
@@ -152,7 +152,7 @@ const VehicleTable = ({ vehicles, onEdit, onDelete, onToggleSale, onToggleRent }
                       <EditIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Delete">
+                  <Tooltip title="Supprimer">
                     <IconButton
                       size="small"
                       onClick={() => onDelete(vehicle.id)}

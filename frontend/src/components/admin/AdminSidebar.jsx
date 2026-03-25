@@ -32,7 +32,7 @@ const AdminSidebar = () => {
   const menuItems = [
     { label: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
     { label: 'Vehicles', icon: <DirectionsCarIcon />, path: '/admin/vehicles' },
-    { label: 'Applications', icon: <DescriptionIcon />, path: '/admin/applications' },
+    { label: 'Gestion des demandes', icon: <DescriptionIcon />, path: '/admin/applications' },
   ];
 
   const handleNavigate = (path) => {
@@ -125,7 +125,7 @@ const AdminSidebar = () => {
               <ExitToAppIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Logout"
+              primary="Déconnexion"
               primaryTypographyProps={{ color: '#C7C7C7', fontWeight: 500, letterSpacing: '0.02em' }}
             />
           </ListItemButton>
