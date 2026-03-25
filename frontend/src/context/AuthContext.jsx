@@ -60,15 +60,33 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const register = async (data) => {
+  const register = async (userData) => {
+    const payload = {
+      full_name: userData.full_name,
+      email: userData.email,
+      password: userData.password,
+    }
     try {
-      const response = await authAPI.register(data)
+      const response = await authAPI.register(payload)
       return { success: true, data: response.data }
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.detail || 'Registration failed' 
+      console.error('[register] error:', error)
+      console.error('[register] response data:', error.response?.data)
+      console.error('[register] status:', error.response?.status)
+
+      const detail = error.response?.data?.detail
+      let errorMessage
+      if (Array.isArray(detail)) {
+        errorMessage = detail.map((e) => e.msg || JSON.stringify(e)).join(' | ')
+      } else if (typeof detail === 'string') {
+        errorMessage = detail
+      } else if (error.message) {
+        errorMessage = error.message
+      } else {
+        errorMessage = 'Inscription échouée — vérifiez votre connexion et réessayez.'
       }
+
+      return { success: false, error: errorMessage }
     }
   }
 
