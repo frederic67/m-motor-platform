@@ -22,7 +22,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import EventIcon from '@mui/icons-material/Event'
-import { vehiclesAPI, applicationsAPI } from '../services/api'
+import { vehiclesAPI, applicationsAPI, API_HOST } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 
 const VehicleDetail = () => {
@@ -135,7 +135,7 @@ const VehicleDetail = () => {
             {vehicle.image_url ? (
               <Box
                 component="img"
-                src={`http://localhost:8000${vehicle.image_url}`}
+                src={`${API_HOST}${vehicle.image_url}`}
                 alt={`${vehicle.brand} ${vehicle.model}`}
                 sx={{
                   width: '100%',

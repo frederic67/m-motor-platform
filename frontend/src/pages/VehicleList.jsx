@@ -23,7 +23,7 @@ import {
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import SpeedIcon from '@mui/icons-material/Speed'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import { vehiclesAPI } from '../services/api'
+import { vehiclesAPI, API_HOST } from '../services/api'
 
 const VehicleList = () => {
   const navigate = useNavigate()
@@ -219,7 +219,7 @@ const VehicleList = () => {
                     <CardMedia
                       component="img"
                       height="200"
-                      image={`http://localhost:8000${vehicle.image_url}`}
+                      image={`${API_HOST}${vehicle.image_url}`}
                       alt={`${vehicle.brand} ${vehicle.model}`}
                       sx={{ objectFit: 'cover' }}
                     />

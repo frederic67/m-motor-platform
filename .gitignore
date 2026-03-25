@@ -55,6 +55,11 @@ build/
 *~
 .DS_Store
 
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
 # Logs
 logs/
 *.log

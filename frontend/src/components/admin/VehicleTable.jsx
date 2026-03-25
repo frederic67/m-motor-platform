@@ -15,6 +15,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import { API_HOST } from '../../services/api';
 
 const VehicleTable = ({ vehicles, onEdit, onDelete, onToggleSale, onToggleRent }) => {
   if (!vehicles || vehicles.length === 0) {
@@ -70,7 +71,7 @@ const VehicleTable = ({ vehicles, onEdit, onDelete, onToggleSale, onToggleRent }
           >
             <TableCell>
               <Avatar
-                src={vehicle.image_url ? `http://localhost:8000${vehicle.image_url}` : undefined}
+                src={vehicle.image_url ? `${API_HOST}${vehicle.image_url}` : undefined}
                 variant="rounded"
                 sx={{ 
                   width: 60, 

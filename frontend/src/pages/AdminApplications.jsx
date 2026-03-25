@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminSidebar from '../components/admin/AdminSidebar';
 import ApplicationTable from '../components/admin/ApplicationTable';
 import ConfirmDialog from '../components/admin/ConfirmDialog';
-import { applicationsAPI, documentsAPI } from '../services/api';
+import { applicationsAPI, documentsAPI, API_HOST } from '../services/api';
 import { toast } from 'react-toastify';
 
 const AdminApplications = () => {
@@ -191,11 +191,11 @@ const AdminApplications = () => {
     const normalizedSlashes = filePath.replace(/\\/g, '/');
     const uploadsIndex = normalizedSlashes.indexOf('/uploads/');
     if (uploadsIndex >= 0) {
-      return `http://localhost:8000${normalizedSlashes.slice(uploadsIndex)}`;
+      return `${API_HOST}${normalizedSlashes.slice(uploadsIndex)}`;
     }
 
     const normalizedPath = normalizedSlashes.startsWith('/') ? normalizedSlashes : `/${normalizedSlashes}`;
-    return `http://localhost:8000${normalizedPath}`;
+    return `${API_HOST}${normalizedPath}`;
   };
 
   const getStatusColor = (status) => {

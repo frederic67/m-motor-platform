@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_HOST } from '../../services/api';
 import {
   Dialog,
   DialogTitle,
@@ -37,7 +38,7 @@ const VehicleForm = ({ open, onClose, onSubmit, vehicle }) => {
   useEffect(() => {
     if (vehicle) {
       setFormData(vehicle);
-      setImagePreview(vehicle.image_url ? `http://localhost:8000${vehicle.image_url}` : null);
+      setImagePreview(vehicle.image_url ? `${API_HOST}${vehicle.image_url}` : null);
     } else {
       setFormData({
         brand: '',
