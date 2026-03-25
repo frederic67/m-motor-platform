@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
+import types as _types
 from uuid import UUID
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -10,6 +11,16 @@ from app.core.config import settings
 from app.db.session import get_db
 from app.models.user import User, UserRole
 from app.core.logging import logger
+
+# passlib 1.7.4 reads bcrypt.__about__.__version__ for version detection.
+# bcrypt >= 4.0 removed __about__, causing passlib to fall back to a broken
+# compatibility path that pre-encodes the secret and exceeds bcrypt's 72-byte
+# limit. This shim restores the attribute before the CryptContext is created.
+import bcrypt as _bcrypt_module
+if not hasattr(_bcrypt_module, '__about__'):
+    _bcrypt_module.__about__ = _types.SimpleNamespace(
+        __version__=_bcrypt_module.__version__
+    )
 
 # Password hashing context
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -25,13 +36,25 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 def hash_password(password: str) -> str:
     """
     Hash a plain text password using bcrypt.
-    
+
     Args:
         password: Plain text password
-        
+
     Returns:
         Hashed password string
     """
+    if not isinstance(password, str):
+        logger.error(
+            f"[hash_password] expected str, got {type(password).__name__}: "
+            f"{repr(password)[:80]}"
+        )
+        raise ValueError(
+            f"hash_password requires a plain str, got {type(password).__name__}"
+        )
+    logger.debug(
+        f"[hash_password] hashing password — type={type(password).__name__}, "
+        f"len={len(password)}, utf8_bytes={len(password.encode('utf-8'))}"
+    )
     return pwd_context.hash(password)
 
 
