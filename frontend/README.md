@@ -130,15 +130,15 @@ const Component = () => {
 VITE_API_BASE_URL=http://localhost:8000/api
 ```
 
+
 ## Credentials Test
 
-### Admin
-- Email: `admin@mmotors.com`
-- Password: `Admin123!`
+| Rôle | Email | Mot de passe |
+|---|---|---|
+| Admin | `admin@mmotors.com` | `Admin123!` |
+| Client | `client@mmotors.com` | `Client123!` |
 
-### Client
-- Créer un compte via `/register`
-
+> Ces comptes sont créés automatiquement au démarrage — aucune inscription nécessaire.
 ## Commandes
 
 ```bash

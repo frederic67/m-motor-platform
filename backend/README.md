@@ -133,12 +133,16 @@ python scripts/seed.py seed --force   # Forcer les véhicules de démo
 ```
 
 **Credentials admin par défaut (development):**
-- Email: `admin@mmotors.com`
-- Password: `Admin123!`
+**Comptes créés automatiquement au démarrage :**
 
-**⚠️ En mode development, l'admin est auto-créé au démarrage de l'application.**
+| Rôle | Email | Mot de passe |
+|---|---|---|
+| Admin | `admin@mmotors.com` | `Admin123!` |
+| Client | `client@mmotors.com` | `Client123!` |
 
 **⚠️ Changez ces credentials en production !**
+
+
 
 ### Données de démo
 
