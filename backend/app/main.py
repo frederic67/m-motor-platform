@@ -118,38 +118,48 @@ async def startup_event():
         logger.error(f"FATAL: Failed to initialize database: {e}", exc_info=True)
         raise
     
-    # Step 2: Idempotent admin seed — runs in every environment
+    # Step 2: Idempotent demo accounts seed — runs in every environment
+    _seed_accounts = [
+        {
+            "full_name": "Admin M-Motors",
+            "email": "admin@mmotors.com",
+            "password": "Admin123!",
+            "role_name": "ADMIN",
+        },
+        {
+            "full_name": "Client M-Motors",
+            "email": "client@mmotors.com",
+            "password": "Client123!",
+            "role_name": "CUSTOMER",
+        },
+    ]
     try:
         from app.db.session import SessionLocal
         from app.models.user import User, UserRole
         from app.core.security import hash_password
 
-        admin_email = "admin@mmotors.com"
-        logger.info(f"Checking for admin user ({admin_email})...")
-
         db = SessionLocal()
         try:
-            admin = db.query(User).filter(User.email == admin_email).first()
-            if not admin:
-                admin = User(
-                    full_name="Admin M-Motors",
-                    email=admin_email,
-                    hashed_password=hash_password("Admin123!"),
-                    role=UserRole.ADMIN,
-                )
-                db.add(admin)
-                db.commit()
-                db.refresh(admin)
-                logger.info(f"✓ Admin user created: {admin_email}")
-            else:
-                logger.info(f"✓ Admin user already exists: {admin_email}")
+            for account in _seed_accounts:
+                exists = db.query(User).filter(User.email == account["email"]).first()
+                if not exists:
+                    db.add(User(
+                        full_name=account["full_name"],
+                        email=account["email"],
+                        hashed_password=hash_password(account["password"]),
+                        role=UserRole[account["role_name"]],
+                    ))
+                    logger.info(f"✓ Demo account created: {account['email']}")
+                else:
+                    logger.info(f"✓ Demo account already exists: {account['email']}")
+            db.commit()
         except Exception as e:
-            logger.error(f"Error during admin user seeding: {e}", exc_info=True)
+            logger.error(f"Error during demo accounts seeding: {e}", exc_info=True)
             db.rollback()
         finally:
             db.close()
     except Exception as e:
-        logger.error(f"Error during admin seeding setup: {e}", exc_info=True)
+        logger.error(f"Error during demo accounts seeding setup: {e}", exc_info=True)
     
     logger.info(f"✓ {settings.APP_NAME} started successfully on {db_type}")
 
