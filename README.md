@@ -10,18 +10,20 @@ Projet monorepo pour M-Motor.
 /docs      - Documentation du projet
 ```
 
-## Démarrage
+## Lancer le projet en local
 
 ### Backend
 ```bash
 cd backend
-# Instructions à venir
+pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
 ### Frontend
 ```bash
 cd frontend
-# Instructions à venir
+npm install
+npm run dev
 ```
 
 ## Développement
