@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: str = '["http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"]'
     APP_NAME: str = "M-Motor API"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False
     PORT: int = 8000
     UPLOAD_DIR: str = "uploads"
     MAX_UPLOAD_MB: int = 5
@@ -38,8 +38,15 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self) -> str:
-        """Effective database URL: DATABASE_URL > DB_URL > SQLite fallback."""
-        return self.DATABASE_URL or self.DB_URL
+        """Effective database URL: DATABASE_URL > DB_URL > SQLite fallback.
+
+        Normalises the legacy 'postgres://' scheme (injected by some Railway /
+        Heroku setups) to 'postgresql://' which SQLAlchemy 2.x requires.
+        """
+        url = self.DATABASE_URL or self.DB_URL
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql://", 1)
+        return url
 
     @property
     def cors_origins_list(self) -> list[str]:

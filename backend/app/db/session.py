@@ -3,13 +3,19 @@ from sqlalchemy.orm import sessionmaker, Session
 from app.core.config import settings
 from typing import Generator
 
+# Confirm at startup which database backend is active (visible in Railway logs)
+_db_url = settings.database_url
+_db_type = "SQLite (local fallback)" if settings.is_sqlite else "PostgreSQL"
+_masked = _db_url if settings.is_sqlite else _db_url.split("@")[-1]
+print(f"[DB] Backend: {_db_type} | host/path: {_masked}", flush=True)
+
 # Configure engine based on database type
 if settings.is_sqlite:
-    # SQLite configuration for local development
+    # SQLite configuration for local development only
     engine = create_engine(
-        settings.database_url,
+        _db_url,
         connect_args={"check_same_thread": False},
-        echo=settings.DEBUG
+        echo=settings.DEBUG,
     )
 
     @event.listens_for(engine, "connect")
@@ -20,11 +26,11 @@ if settings.is_sqlite:
 else:
     # PostgreSQL configuration for production
     engine = create_engine(
-        settings.database_url,
+        _db_url,
         pool_pre_ping=True,
         pool_size=5,
         max_overflow=10,
-        echo=settings.DEBUG
+        echo=settings.DEBUG,
     )
 
 SessionLocal = sessionmaker(
