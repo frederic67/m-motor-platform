@@ -53,10 +53,24 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       setUser(null)
-      return { 
-        success: false, 
-        error: error.response?.data?.detail || 'Login failed' 
+
+      const status = error.response?.status
+      let errorMessage
+
+      if (!error.response) {
+        // Réseau indisponible, CORS, timeout…
+        errorMessage = 'Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.'
+      } else if (status === 401) {
+        errorMessage = 'Email ou mot de passe incorrect.'
+      } else if (status === 422) {
+        errorMessage = 'Données invalides. Vérifiez votre email et votre mot de passe.'
+      } else if (status >= 500) {
+        errorMessage = 'Une erreur est survenue côté serveur. Veuillez réessayer dans un instant.'
+      } else {
+        errorMessage = 'Erreur de connexion. Veuillez réessayer.'
       }
+
+      return { success: false, error: errorMessage }
     }
   }
 

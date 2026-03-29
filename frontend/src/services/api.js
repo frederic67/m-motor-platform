@@ -30,7 +30,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const url = error.config?.url || ''
+    const isAuthRoute = url.includes('/auth/login') || url.includes('/auth/register')
+
+    // Only redirect on 401 for authenticated routes, never for login/register
+    // (login returns 401 on bad credentials — redirecting would cause a blank page)
+    if (error.response?.status === 401 && !isAuthRoute) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       window.location.href = '/login'
