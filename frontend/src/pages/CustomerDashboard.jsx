@@ -30,9 +30,9 @@ const CustomerDashboard = () => {
       setApplications(response.data);
     } catch (err) {
       console.error('Error fetching applications:', err);
-      setError('Error loading your applications');
+      setError('Erreur lors du chargement de vos demandes.');
       if (err.response?.status === 401) {
-        toast.error('Session expired. Please log in again.');
+        toast.error('Session expirée. Veuillez vous reconnecter.');
         navigate('/login');
       }
     } finally {

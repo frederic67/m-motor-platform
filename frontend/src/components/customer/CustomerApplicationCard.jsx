@@ -9,22 +9,22 @@ const CustomerApplicationCard = ({ application }) => {
   const getStatusConfig = (status) => {
     switch (status) {
       case 'APPROVED':
-        return { label: 'Approved', color: 'success' };
+        return { label: 'Approuvée', color: 'success' };
       case 'REJECTED':
-        return { label: 'Rejected', color: 'error' };
+        return { label: 'Rejetée', color: 'error' };
       case 'PENDING':
-        return { label: 'Pending', color: 'warning' };
+        return { label: 'En attente', color: 'warning' };
       default:
         return { label: status, color: 'default' };
     }
   };
 
   const getTypeLabel = (type) => {
-    return type === 'PURCHASE' ? 'Purchase' : 'Rental';
+    return type === 'PURCHASE' ? 'Achat' : 'Location';
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -60,7 +60,7 @@ const CustomerApplicationCard = ({ application }) => {
               letterSpacing: '0.02em',
             }}
           >
-            Application #{application.id.slice(0, 8)}
+            Demande #{application.id.slice(0, 8)}
           </Typography>
           <Chip
             label={statusConfig.label}
@@ -95,7 +95,7 @@ const CustomerApplicationCard = ({ application }) => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
               <DirectionsCarIcon sx={{ color: '#C1121F', fontSize: '1.2rem' }} />
               <Typography variant="body2" color="#9A9A9A" sx={{ textTransform: 'uppercase', fontSize: '0.7rem', letterSpacing: '0.05em' }}>
-                Vehicle
+                Véhicule
               </Typography>
             </Box>
             <Typography variant="body1" color="#F5F5F5" sx={{ fontWeight: 600 }}>
@@ -111,12 +111,12 @@ const CustomerApplicationCard = ({ application }) => {
         )}
 
         <Typography variant="body2" color="#9A9A9A" sx={{ mb: 0.5 }}>
-          Created: {formatDate(application.created_at)}
+          Créé le {formatDate(application.created_at)}
         </Typography>
 
         {application.updated_at && application.updated_at !== application.created_at && (
           <Typography variant="body2" color="#9A9A9A">
-            Updated: {formatDate(application.updated_at)}
+            Mis à jour le {formatDate(application.updated_at)}
           </Typography>
         )}
       </CardContent>
@@ -136,7 +136,7 @@ const CustomerApplicationCard = ({ application }) => {
             },
           }}
         >
-          View Details
+          Voir les détails
         </Button>
       </CardActions>
     </Card>

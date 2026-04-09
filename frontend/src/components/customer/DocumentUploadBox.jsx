@@ -15,14 +15,14 @@ const DocumentUploadBox = ({ applicationId, onUploadSuccess }) => {
     // Validate file type
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
-      setError('Invalid file format. Accepted formats: PDF, JPG, PNG');
+      setError('Format de fichier invalide. Formats acceptés : PDF, JPG, PNG');
       return;
     }
 
     // Validate file size (5MB max)
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
-      setError('File is too large. Maximum size: 5 MB');
+      setError('Fichier trop volumineux. Taille maximale : 5 Mo');
       return;
     }
 
@@ -31,7 +31,7 @@ const DocumentUploadBox = ({ applicationId, onUploadSuccess }) => {
 
     try {
       await documentsAPI.upload(applicationId, file);
-      toast.success('Document uploaded successfully');
+      toast.success('Document téléversé avec succès');
       if (onUploadSuccess) {
         onUploadSuccess();
       }
@@ -39,7 +39,7 @@ const DocumentUploadBox = ({ applicationId, onUploadSuccess }) => {
       event.target.value = '';
     } catch (err) {
       console.error('Error uploading document:', err);
-      const errorMessage = err.response?.data?.detail || 'Error uploading document';
+          const errorMessage = err.response?.data?.detail || 'Erreur lors du téléversement du document';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -77,11 +77,11 @@ const DocumentUploadBox = ({ applicationId, onUploadSuccess }) => {
       />
       
       <Typography variant="body1" color="#F5F5F5" sx={{ mb: 1, fontWeight: 600 }}>
-        Upload Document
+        Téléverser un document
       </Typography>
-      
+
       <Typography variant="body2" color="#9A9A9A" sx={{ mb: 3 }}>
-        Accepted formats: PDF, JPG, PNG • Max size: 5 MB
+        Formats acceptés : PDF, JPG, PNG • Taille max : 5 Mo
       </Typography>
 
       {uploading ? (
@@ -95,7 +95,7 @@ const DocumentUploadBox = ({ applicationId, onUploadSuccess }) => {
             }}
           />
           <Typography variant="body2" color="#9A9A9A" sx={{ mt: 1 }}>
-            Uploading...
+            Téléversement en cours...
           </Typography>
         </Box>
       ) : (
@@ -112,7 +112,7 @@ const DocumentUploadBox = ({ applicationId, onUploadSuccess }) => {
             },
           }}
         >
-          Choose File
+          Choisir un fichier
           <input
             type="file"
             hidden

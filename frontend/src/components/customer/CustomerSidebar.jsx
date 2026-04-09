@@ -13,8 +13,8 @@ const CustomerSidebar = () => {
   const { logout, user } = useAuth();
 
   const menuItems = [
-    { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { label: 'My Applications', icon: <DescriptionIcon />, path: '/my-applications' },
+    { label: 'Tableau de bord', icon: <DashboardIcon />, path: '/dashboard' },
+    { label: 'Mes demandes', icon: <DescriptionIcon />, path: '/my-applications' },
   ];
 
   const handleLogout = () => {
@@ -50,7 +50,7 @@ const CustomerSidebar = () => {
           M-MOTOR
         </Typography>
         <Typography variant="body2" color="#9A9A9A" sx={{ letterSpacing: '0.03em' }}>
-          Customer Portal
+          Espace Client
         </Typography>
         {user && (
           <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid rgba(193, 18, 31, 0.1)' }}>
@@ -121,7 +121,7 @@ const CustomerSidebar = () => {
               <ExitToAppIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Logout"
+              primary="Déconnexion"
               primaryTypographyProps={{
                 color: '#9A9A9A',
                 letterSpacing: '0.02em',
